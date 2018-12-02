@@ -1,0 +1,34 @@
+node:
+  cluster: "front-proxy"
+  id: "1"
+
+dynamic_resources:
+  lds_config:
+    api_config_source:
+      api_type: REST
+      cluster_names: [service-xds]
+      refresh_delay: 1s
+  cds_config:
+    api_config_source:
+      api_type: REST
+      cluster_names: [service-xds]
+      refresh_delay: 1s
+
+static_resources:
+  clusters:
+  - name: service-xds
+    connect_timeout: 0.25s
+    type: STRICT_DNS
+    lb_policy: ROUND_ROBIN
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service-xds
+        port_value: 80
+
+admin:
+  access_log_path: "/dev/null"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001

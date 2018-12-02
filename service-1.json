@@ -1,0 +1,8 @@
+{
+  "Service": {
+    "address": "service-1",
+    "name": "service-1",
+    "tags": ["tbn-cluster"],
+    "port": 80
+  }
+}

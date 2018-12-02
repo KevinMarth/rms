@@ -1,0 +1,75 @@
+static_resources:
+  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: AUTO
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: service-1
+              domains:
+              - "service-1.useast2.rentpath.com"
+              routes:
+              - match:
+                  path: "/service"
+                route:
+                  prefix_rewrite: "/service/hello"
+                  cluster: service-1
+              - match:
+                  path: "/service/greet"
+                route:
+                  prefix_rewrite: "/service/hello"
+                  cluster: service-1
+              - match:
+                  prefix: "/service"
+                route:
+                  cluster: service-1
+            - name: service-2
+              domains:
+              - "service-2.useast2.rentpath.com"
+              routes:
+              # - match:
+              #     path: "/service/greet"
+              #   route:
+              #     prefix_rewrite: "/service/hello"
+              #     cluster: service-2
+              - match:
+                  prefix: "/service"
+                route:
+                  cluster: service-2
+          http_filters:
+          - name: envoy.router
+            config: {}
+  clusters:
+  - name: service-1
+    connect_timeout: 0.25s
+    type: STRICT_DNS
+    lb_policy: ROUND_ROBIN
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service-1
+        port_value: 80
+  - name: service-2
+    connect_timeout: 0.25s
+    type: STRICT_DNS
+    lb_policy: ROUND_ROBIN
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service-2
+        port_value: 80
+
+admin:
+  access_log_path: "/dev/null"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001

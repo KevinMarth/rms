@@ -1,0 +1,3 @@
+FROM envoyproxy/envoy-alpine:latest
+RUN apk update
+CMD /usr/local/bin/envoy -c /etc/envoy-front.yaml

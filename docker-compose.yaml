@@ -1,0 +1,123 @@
+version: '2'
+services:
+
+  envoy-static:
+    build:
+      context: .
+      dockerfile: Dockerfile-envoy-front
+    volumes:
+      - ./envoy-static.yaml:/etc/envoy-front.yaml
+    networks:
+      - envoymesh
+    ports:
+      - "8000:80"
+      - "8001:8001"
+
+  envoy-dynamic:
+    build:
+      context: .
+      dockerfile: Dockerfile-envoy-front
+    volumes:
+      - ./envoy-dynamic.yaml:/etc/envoy-front.yaml
+    networks:
+      - envoymesh
+    ports:
+      - "8100:80"
+      - "8101:8001"
+
+  envoy-dynamic-rds:
+    build:
+      context: .
+      dockerfile: Dockerfile-envoy-front
+    volumes:
+      - ./envoy-dynamic-rds.yaml:/etc/envoy-front.yaml
+    networks:
+      - envoymesh
+    ports:
+      - "8200:80"
+      - "8201:8001"
+
+  envoy-simple:
+    build:
+      context: .
+      dockerfile: Dockerfile-envoy-simple
+    networks:
+      - envoymesh
+    expose:
+      - "80"
+      - "9999"
+    ports:
+      - "9000:80"
+      - "9999:9999"
+
+  consul:
+    build:
+      context: .
+      dockerfile: Dockerfile-consul
+    networks:
+      - envoymesh
+    expose:
+      - "8500"
+
+  rotor:
+    build:
+      context: .
+      dockerfile: Dockerfile-rotor
+    volumes:
+      - ./rotor-static.yaml:/etc/rotor-static.yaml
+    networks:
+      - envoymesh
+    expose:
+      - "50000"
+
+  service-xds:
+    build:
+      context: .
+      dockerfile: Dockerfile-service
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
+      - ./service.py:/code/service.py
+      - ./service.sh:/code/service.sh
+    networks:
+      - envoymesh
+    environment:
+      - SERVICE=xds
+    expose:
+      - "80"
+
+  service-1:
+    build:
+      context: .
+      dockerfile: Dockerfile-service
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
+      - ./service.py:/code/service.py
+      - ./service.sh:/code/service.sh
+    networks:
+      envoymesh:
+        aliases:
+          - service-1
+    environment:
+      - SERVICE=1
+    expose:
+      - "80"
+
+  service-2:
+    build:
+      context: .
+      dockerfile: Dockerfile-service
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
+      - ./service.py:/code/service.py
+      - ./service.sh:/code/service.sh
+    networks:
+      envoymesh:
+        aliases:
+          - service-2
+    environment:
+      - SERVICE=2
+    expose:
+      - "80"
+
+networks:
+  envoymesh: {}

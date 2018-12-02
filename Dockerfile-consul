@@ -1,0 +1,10 @@
+FROM consul:latest
+
+ADD ./service.json /etc/consul.d/service.json
+#ADD ./service-1.json /etc/consul.d/service-1.json
+#ADD ./service-2.json /etc/consul.d/service-2.json
+
+EXPOSE 8500
+EXPOSE 80
+
+CMD ["agent", "-ui", "-dev", "-client", "0.0.0.0", "-config-dir", "/etc/consul.d"]
