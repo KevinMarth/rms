@@ -11,6 +11,7 @@ Route Management Service
 * [Envoy on Laptop](https://blog.turbinelabs.io/getting-started-with-envoy-on-your-laptop-1b1a7073fd8e)
 * [Envoy Routing](https://blog.turbinelabs.io/routing-and-envoy-635305595275)
 * [Learn Envoy](https://www.learnenvoy.io)
+* [KataCoda](https://www.katacoda.com/envoyproxy)
 * [Rotor](https://github.com/turbinelabs/rotor)
 * [Rotor Consul](https://github.com/turbinelabs/rotor/tree/master/examples/consul)
 * [Rotor Blog](https://blog.turbinelabs.io/rotor-a-complete-control-plane-for-envoy-294acb3fc92)
@@ -22,3 +23,7 @@ Route Management Service
 * [2338](https://github.com/envoyproxy/envoy/issues/2338)
 * [2423](https://github.com/envoyproxy/envoy/issues/2423)
 * [4085](https://github.com/envoyproxy/envoy/issues/4085)
+
+## Technology
+* [HTTP/2 and gRPC](https://blog.netsil.com/http-2-and-grpc-the-next-generation-of-microservices-interactions-aff4ffa6faed)
+* [Phoenix 1.4](https://elixirforum.com/t/phoenix-1-4-0-released/17182)
